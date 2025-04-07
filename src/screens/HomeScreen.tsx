@@ -1,16 +1,31 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react'
-import { StyleSheet, View } from 'react-native';
+import { Alert, Button, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-gesture-handler';
 
-const HomeScreen = ({route}:any) => {
+const HomeScreen = ({route,navigation}:any) => {
     const {user} = route.params;//Extraer el usuario desde Params
+
+    //Funcion para cerrar sesion
+    const cerrarSesion=async()=>{
+        try{
+            await AsyncStorage.removeItem("usuario")
+            navigation.replace("Login")
+        }catch(error){
+            Alert.alert("Error","No se pudo cerrar sesión")
+        }
+    }
+
   return (
     <View style={styles.container}>
         <Text style={styles.text}>Bienvenido,{user}</Text>
 
+        <Button title='Cerrar Sesion'  onPress={cerrarSesion} color="red"></Button>
+
     </View>
   )
 }
+
 
 const styles=StyleSheet.create({
     container:{
